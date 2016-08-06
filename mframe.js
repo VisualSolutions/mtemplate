@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
+const helper = require('./bin/mtemplate-helper.js');
 const _ = require('underscore');
 
 exports.mframe = function(currentDirectory) {
@@ -22,7 +23,7 @@ exports.mframe = function(currentDirectory) {
             value: 10
         },
         'intRange': {
-            type: 'int',
+            type: 'intRange',
             value: {
                 min: 0,
                 max: 50
@@ -35,6 +36,7 @@ exports.mframe = function(currentDirectory) {
         },
         'mediaReference': {
             value: 'path/to/bundle/image.jpg',
+            type: 'mediaReference',
             typeOptions: {
                 mediaType: 5
             }
@@ -44,8 +46,8 @@ exports.mframe = function(currentDirectory) {
                 'one': true,
                 'three': true
             },
+            type: 'multiselect',
             typeOptions: {
-                renderType: 'btngroup',
                 values: ['one', 'two', 'three', 'four'],
             }
         },
@@ -59,7 +61,7 @@ exports.mframe = function(currentDirectory) {
                 values: ['bold', 'italic', 'underline'],
                 icons: {
                     'bold': 'editor-bold',
-                    'italic': 'editor-italic',
+                    'italic': 'editor-italics',
                     'underline': 'editor-underline'
                 }
             }
@@ -85,7 +87,7 @@ exports.mframe = function(currentDirectory) {
             type: 'select',
             value: 'center',
             typeOptions: {
-                renderType: 'btnGroup',
+                renderType: 'btngroup',
                 values: ['left', 'center', 'right', 'justify'],
                 icons: {
                     'left': 'editor-align-left',

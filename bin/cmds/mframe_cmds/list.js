@@ -62,7 +62,7 @@ function showParams(params) {
         params.forEach((p, pid) => {
             let paramId = p.name || pid;
             let type = p.type || 'no type';
-            let value = p.value || 'undefined';
+            let value =  JSON.stringify(p.value);
             helper.output(`\t[${paramId}]:`, `${type} / ${value}`);
         });
     } else {

@@ -29,6 +29,12 @@ exports.handler = function(argv) {
     } else {
         let component = findOrCreateMatch(mframeJson.components, argv.component, {
             name: argv.component,
+            label: {
+                'en-US': {
+                    value: argv.component,
+                    tooltip: 'Automatically generated default label.'
+                }
+            },
             params: []
         });
 
@@ -102,6 +108,16 @@ function findOrCreateMatch(array, what, def) {
 }
 
 function createParam(name, type) {
-    var param = Object.assign({name: name}, JSON.parse(JSON.stringify(mframe.paramTypeDescription[type])));
+    var param = Object.assign({
+            name: name,
+            label: {
+                'en-US': {
+                    value: name,
+                    tooltip: 'Automatically generated default label.'
+                }
+            }
+        }, 
+        JSON.parse(JSON.stringify(mframe.paramTypeDescription[type]))
+    );
     return param;
 }

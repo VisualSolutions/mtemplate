@@ -25,6 +25,8 @@ exports.handler = function(argv) {
 
     var mtemplate = require(mTemplateJsonPath);
 
+    helper.output('Creating archive...');
+
     var archive = new zip();
     _.keys(mtemplate).forEach(directory => {
         mtemplate[directory].forEach(d => {
@@ -37,6 +39,7 @@ exports.handler = function(argv) {
                             '',
                             0644 << 16
                         );
+                        helper.output(`\t${path.join(directory, f)}`, ' ');                        
                     });
                 } else {
                     archive.addFile(
@@ -45,6 +48,7 @@ exports.handler = function(argv) {
                         '',
                         0644 << 16
                     );
+                    helper.output(`\t${path.join(directory, path.parse(d).base)}`, ' ');                                            
                 }
             } 
         });
@@ -55,13 +59,17 @@ exports.handler = function(argv) {
         '',
         0644 << 16
     );
+    helper.output(`\tmframe.json`, ' ');    
     archive.addFile(
         'index.html', 
         fs.readFileSync(path.join(currentDirectory,'index.html')),
         '',
         0644 << 16
     );
+    helper.output(`\tindex.html`, ' ');        
 
     var package = require(packageJsonPath);
     archive.writeZip(path.join(currentDirectory, `${package.name}-${package.version}.zip`)); 
+
+    helper.success(path.join(currentDirectory, `${package.name}-${package.version}.zip`), ' is ready');
 };

@@ -157,17 +157,17 @@ function createOrUpdateMtemplateJson(currentDirectory) {
         helper.output('Found no mtemplate.json. Creating default file.');
         let templateLoaderPath = path.join(currentDirectory, 'node_modules', 'mtemplate-loader', 'release', 'js');
         let mtemplate = {
-            js: [
+            '/js': [
                 slash(path.relative(currentDirectory, templateLoaderPath)),
                 slash(path.relative(currentDirectory, path.join(currentDirectory, 'js')))
             ],
-            css: [
+            '/css': [
                 slash(path.relative(currentDirectory, path.join(currentDirectory, 'css')))
             ],
-            fonts: [
+            '/fonts': [
                 slash(path.relative(currentDirectory, path.join(currentDirectory, 'fonts')))
             ],
-            images: [
+            '/images': [
                 slash(path.relative(currentDirectory, path.join(currentDirectory, 'images')))
             ]
         };
