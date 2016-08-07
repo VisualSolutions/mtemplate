@@ -3,11 +3,17 @@ const _ = require('underscore');
 const helper = require('./../../mtemplate-helper.js');
 const mframe = require('./../../../mframe.js').mframe;
 
-exports.command = 'remove <component> [parameter]';
+exports.command = 'remove <component> [parameter] [options]';
 
 exports.describe = 'Removes <component>. If [parameter] is present, only removes that parameter.';
 
-exports.builder = undefined;
+exports.builder = {
+    'f': {
+        alias: 'force',
+        describe: 'Force remove a component even if it has parameters',
+        type: 'boolean'
+    }
+};
 
 exports.handler = function(argv) {
     let currentDirectory = process.cwd();
@@ -32,8 +38,13 @@ exports.handler = function(argv) {
                 helper.output('Removing parameter...');
             }
         } else {
-            mframeJson.components.splice(mframeJson.components.indexOf(component), 1);
-            helper.output('Removing component...');            
+            if (component.params.length > 0 && argv.force) {
+                mframeJson.components.splice(mframeJson.components.indexOf(component), 1);
+                helper.output('Removing component with ${component.params.length} parameters...');
+            } else {
+                helper.error(`Component has ${component.params.length} parameters. Remove all of them or use --force.`);
+                return;
+            }
         }
 
         mframeHandler.save(mframeJson);

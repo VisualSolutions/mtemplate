@@ -66,7 +66,21 @@ exports.handler = function(argv) {
         '',
         0644 << 16
     );
-    helper.output(`\tindex.html`, ' ');        
+    helper.output(`\tindex.html`, ' ');   
+    archive.addFile(
+        'index.html', 
+        fs.readFileSync(path.join(currentDirectory,'mtemplate.json')),
+        '',
+        0644 << 16
+    );
+    helper.output(`\mtemplate.json`, ' ');
+    archive.addFile(
+        'index.html', 
+        fs.readFileSync(path.join(currentDirectory,'package.json')),
+        '',
+        0644 << 16
+    );
+    helper.output(`\package.json`, ' ');     
 
     var package = require(packageJsonPath);
     archive.writeZip(path.join(currentDirectory, `${package.name}-${package.version}.zip`)); 
