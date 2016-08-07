@@ -40,7 +40,7 @@ exports.handler = function(argv) {
         } else {
             if (component.params.length > 0 && argv.force) {
                 mframeJson.components.splice(mframeJson.components.indexOf(component), 1);
-                helper.output('Removing component with ${component.params.length} parameters...');
+                helper.output(`Removing component with ${component.params.length} parameters...`);
             } else {
                 helper.error(`Component has ${component.params.length} parameters. Remove all of them or use --force.`);
                 return;
