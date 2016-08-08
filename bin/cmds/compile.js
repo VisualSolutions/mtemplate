@@ -1,4 +1,5 @@
-"use strict";
+'use strict';
+
 const fs = require('fs-extra');
 const path = require('path');
 const zip = require('adm-zip');
@@ -34,57 +35,53 @@ exports.handler = function(argv) {
             if (fs.existsSync(d)) {
                 if (fs.lstatSync(d).isDirectory()) {
                     fs.readdirSync(d).forEach(f => {
+                        helper.output(path.join(currentDirectory, d, f), ' ');
                         archive.addFile(
-                            path.join(directory, f), 
-                            fs.readFileSync(path.join(d, f)),
+                            slash(path.join(directory, f)), 
+                            fs.readFileSync(path.join(currentDirectory, d, f)),
                             '',
-                            0o644 << 16
+                            0644 << 16
                         );
-                        helper.output(`\t${path.join(directory, f)}`, ' ');                        
+                        helper.output(`\t${slash(path.join(directory, f))}`, ' ');                        
                     });
                 } else {
                     archive.addFile(
                         path.join(directory, path.parse(d).base), 
-                        fs.readFileSync(path.join(d, f)),
+                        fs.readFileSync(path.join(currentDirectory, d, f)),
                         '',
-                        0o644 << 16
+                        0644 << 16
                     );
                     helper.output(`\t${path.join(directory, path.parse(d).base)}`, ' ');                                            
                 }
             } 
         });
     });
-    archive.addFile(
-        'mframe.json', 
-        fs.readFileSync(path.join(currentDirectory,'mframe.json')),
-        '',
-        0o644 << 16
-    );
-    helper.output(`\tmframe.json`, ' ');    
-    archive.addFile(
-        'index.html', 
-        fs.readFileSync(path.join(currentDirectory,'index.html')),
-        '',
-        0o644 << 16
-    );
-    helper.output(`\tindex.html`, ' ');   
-    archive.addFile(
-        'index.html', 
-        fs.readFileSync(path.join(currentDirectory,'mtemplate.json')),
-        '',
-        0o644 << 16
-    );
-    helper.output(`\mtemplate.json`, ' ');
-    archive.addFile(
-        'index.html', 
-        fs.readFileSync(path.join(currentDirectory,'package.json')),
-        '',
-        0o644 << 16
-    );
-    helper.output(`\package.json`, ' ');     
+    ['mframe.json', 'index.html', 'mtemplate.json', 'package.json'].forEach(f => {
+        addFileSimple(archive, currentDirectory, f);
+    });
+    var package = require(packageJsonPath);
+    archive.writeZip(path.join(currentDirectory, `${package.name}-${package.version}.zip`)); 
 
-    var _package = require(packageJsonPath);
-    archive.writeZip(path.join(currentDirectory, `${_package.name}-${_package.version}.zip`)); 
+    helper.success(path.join(currentDirectory, `${package.name}-${package.version}.zip`), ' is ready');
+};
 
-    helper.success(path.join(currentDirectory, `${_package.name}-${_package.version}.zip`), ' is ready');
+function addFileSimple(archive, currentDirectory, file) {
+    archive.addFile(
+        file, 
+        fs.readFileSync(path.join(currentDirectory,file)),
+        '',
+        0o644 << 16
+    );
+    helper.output(`\t${file}`, ' ');        
+}
+
+function slash(str) {
+	var isExtendedLengthPath = /^\\\\\?\\/.test(str);
+	var hasNonAscii = /[^\x00-\x80]+/.test(str);
+
+	if (isExtendedLengthPath || hasNonAscii) {
+		return str;
+	}
+
+	return (str.replace(/\\/g, '/')).substr(1);
 };
