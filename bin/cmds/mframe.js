@@ -1,3 +1,4 @@
+"use strict";
 exports.command = 'mframe <command>';
 
 exports.describe = 'View or alter the mframe.json components and parameters.';

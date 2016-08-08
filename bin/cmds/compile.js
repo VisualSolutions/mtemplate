@@ -1,3 +1,4 @@
+"use strict";
 const fs = require('fs-extra');
 const path = require('path');
 const zip = require('adm-zip');
@@ -37,7 +38,7 @@ exports.handler = function(argv) {
                             path.join(directory, f), 
                             fs.readFileSync(path.join(d, f)),
                             '',
-                            0644 << 16
+                            0o644 << 16
                         );
                         helper.output(`\t${path.join(directory, f)}`, ' ');                        
                     });
@@ -46,7 +47,7 @@ exports.handler = function(argv) {
                         path.join(directory, path.parse(d).base), 
                         fs.readFileSync(path.join(d, f)),
                         '',
-                        0644 << 16
+                        0o644 << 16
                     );
                     helper.output(`\t${path.join(directory, path.parse(d).base)}`, ' ');                                            
                 }
@@ -57,33 +58,33 @@ exports.handler = function(argv) {
         'mframe.json', 
         fs.readFileSync(path.join(currentDirectory,'mframe.json')),
         '',
-        0644 << 16
+        0o644 << 16
     );
     helper.output(`\tmframe.json`, ' ');    
     archive.addFile(
         'index.html', 
         fs.readFileSync(path.join(currentDirectory,'index.html')),
         '',
-        0644 << 16
+        0o644 << 16
     );
     helper.output(`\tindex.html`, ' ');   
     archive.addFile(
         'index.html', 
         fs.readFileSync(path.join(currentDirectory,'mtemplate.json')),
         '',
-        0644 << 16
+        0o644 << 16
     );
     helper.output(`\mtemplate.json`, ' ');
     archive.addFile(
         'index.html', 
         fs.readFileSync(path.join(currentDirectory,'package.json')),
         '',
-        0644 << 16
+        0o644 << 16
     );
     helper.output(`\package.json`, ' ');     
 
-    var package = require(packageJsonPath);
-    archive.writeZip(path.join(currentDirectory, `${package.name}-${package.version}.zip`)); 
+    var _package = require(packageJsonPath);
+    archive.writeZip(path.join(currentDirectory, `${_package.name}-${_package.version}.zip`)); 
 
-    helper.success(path.join(currentDirectory, `${package.name}-${package.version}.zip`), ' is ready');
+    helper.success(path.join(currentDirectory, `${_package.name}-${_package.version}.zip`), ' is ready');
 };

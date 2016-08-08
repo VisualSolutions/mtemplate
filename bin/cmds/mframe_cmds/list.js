@@ -1,3 +1,4 @@
+"use strict";
 const utils = require('util');
 const _ = require('underscore');
 const helper = require('./../../mtemplate-helper.js');
