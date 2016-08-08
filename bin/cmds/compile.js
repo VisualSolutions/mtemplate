@@ -40,7 +40,7 @@ exports.handler = function(argv) {
                             slash(path.join(directory, f)), 
                             fs.readFileSync(path.join(currentDirectory, d, f)),
                             '',
-                            0644 << 16
+                            0o644 << 16
                         );
                         helper.output(`\t${slash(path.join(directory, f))}`, ' ');                        
                     });
@@ -49,7 +49,7 @@ exports.handler = function(argv) {
                         path.join(directory, path.parse(d).base), 
                         fs.readFileSync(path.join(currentDirectory, d, f)),
                         '',
-                        0644 << 16
+                        0o644 << 16
                     );
                     helper.output(`\t${path.join(directory, path.parse(d).base)}`, ' ');                                            
                 }
@@ -59,10 +59,10 @@ exports.handler = function(argv) {
     ['mframe.json', 'index.html', 'mtemplate.json', 'package.json'].forEach(f => {
         addFileSimple(archive, currentDirectory, f);
     });
-    var package = require(packageJsonPath);
-    archive.writeZip(path.join(currentDirectory, `${package.name}-${package.version}.zip`)); 
+    var packageJson = require(packageJsonPath);
+    archive.writeZip(path.join(currentDirectory, `${packageJson.name}-${packageJson.version}.zip`)); 
 
-    helper.success(path.join(currentDirectory, `${package.name}-${package.version}.zip`), ' is ready');
+    helper.success(path.join(currentDirectory, `${packageJson.name}-${packageJson.version}.zip`), ' is ready');
 };
 
 function addFileSimple(archive, currentDirectory, file) {
