@@ -19,6 +19,7 @@ exports.handler = function(argv) {
         helper.error('Could not find packag.ejson. Please run init');
         return;
     }
+    
     let mTemplateJsonPath = path.join(currentDirectory, 'mtemplate.json');
     if (!fs.existsSync(mTemplateJsonPath)) {
         helper.error('Could not find mtemplate.zip. Please run init');

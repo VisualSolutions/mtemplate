@@ -1,4 +1,5 @@
-"use strict";
+'use strict';
+
 const fs = require('fs-extra');
 const liveServer = require('live-server');
 const path = require('path');
