@@ -2,7 +2,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const zip = require('adm-zip');
+const archiver = require('archiver');   
 const _ = require('underscore');
 const helper = require('./../mtemplate-helper.js');
 
@@ -30,28 +30,26 @@ exports.handler = function(argv) {
 
     helper.output('Creating archive...');
 
-    var archive = new zip();
+    let  packageJson = require(packageJsonPath);
+    let output = fs.createWriteStream(path.join(currentDirectory, `${packageJson.name}-${packageJson.version}.zip`));
+    let archive = archiver('zip');
+    archive.pipe(output);
+    
     _.keys(mtemplate).forEach(directory => {
         mtemplate[directory].forEach(d => {
             if (fs.existsSync(d)) {
                 if (fs.lstatSync(d).isDirectory()) {
                     fs.readdirSync(d).forEach(f => {
                         helper.output(path.join(currentDirectory, d, f), ' ');
-                        archive.addFile(
-                            slash(path.join(directory, f)), 
-                            fs.readFileSync(path.join(currentDirectory, d, f)),
-                            '',
-                            0o644 << 16
-                        );
+                        archive.append(
+                            fs.createReadStream(path.join(currentDirectory, d, f)),
+                            {name: slash(path.join(directory, f))} );
                         helper.output(`\t${slash(path.join(directory, f))}`, ' ');                        
                     });
                 } else {
-                    archive.addFile(
-                        path.join(directory, path.parse(d).base), 
-                        fs.readFileSync(path.join(currentDirectory, d, f)),
-                        '',
-                        0o644 << 16
-                    );
+                    archive.append(
+                            fs.createReadStream(path.join(currentDirectory, d, f)),
+                            {name: slash(path.join(directory, path.parse(d).base))} );
                     helper.output(`\t${path.join(directory, path.parse(d).base)}`, ' ');                                            
                 }
             } 
@@ -60,18 +58,16 @@ exports.handler = function(argv) {
     ['mframe.json', 'index.html', 'mtemplate.json', 'package.json'].forEach(f => {
         addFileSimple(archive, currentDirectory, f);
     });
-    var packageJson = require(packageJsonPath);
-    archive.writeZip(path.join(currentDirectory, `${packageJson.name}-${packageJson.version}.zip`)); 
+
+    archive.finalize(); 
 
     helper.success(path.join(currentDirectory, `${packageJson.name}-${packageJson.version}.zip`), ' is ready');
 };
 
 function addFileSimple(archive, currentDirectory, file) {
-    archive.addFile(
-        file, 
-        fs.readFileSync(path.join(currentDirectory,file)),
-        '',
-        0o644 << 16
+    archive.append(
+        fs.createReadStream(path.join(currentDirectory,file)),
+        {name: file}
     );
     helper.output(`\t${file}`, ' ');        
 }

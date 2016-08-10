@@ -1,4 +1,5 @@
 /// <reference path="globals/adm-zip/index.d.ts" />
+/// <reference path="globals/archiver/index.d.ts" />
 /// <reference path="globals/fs-extra/index.d.ts" />
 /// <reference path="globals/node/index.d.ts" />
 /// <reference path="globals/underscore/index.d.ts" />
