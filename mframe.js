@@ -37,7 +37,7 @@ exports.mframe = function(currentDirectory) {
             }
         },
         'mediaReference': {
-            value: 'path/to/bundle/image.jpg',
+            value: ['images/image1.jpg', 'images/image2.jpg'],
             type: 'mediaReference',
             typeOptions: {
                 mediaType: 5
@@ -57,7 +57,7 @@ exports.mframe = function(currentDirectory) {
             value: {
                 'bold': true
             },
-            type:'multiselect',
+            type: 'multiselect',
             typeOptions: {
                 renderType: 'btngroup',
                 values: ['bold', 'italic', 'underline'],
@@ -123,8 +123,7 @@ exports.mframe = function(currentDirectory) {
                 values: [{
                     image: '/path/to/1.jpg',
                     name: 'first option'
-                },
-                {
+                }, {
                     image: '/path/to/2.jpg',
                     name: 'second option'
                 }]
