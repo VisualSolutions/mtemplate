@@ -16,7 +16,7 @@ exports.handler = function(argv) {
     let currentDirectory = process.cwd();
     var packageJsonPath = path.join(currentDirectory, 'package.json');
     if (!fs.existsSync(packageJsonPath)) {
-        helper.error('Could not find packag.ejson. Please run init');
+        helper.error('Could not find package.json. Please run init');
         return;
     }
     
@@ -41,16 +41,22 @@ exports.handler = function(argv) {
                 if (fs.lstatSync(d).isDirectory()) {
                     fs.readdirSync(d).forEach(f => {
                         helper.output(path.join(currentDirectory, d, f), ' ');
-                        archive.append(
-                            fs.createReadStream(path.join(currentDirectory, d, f)),
-                            {name: slash(path.join(directory, f))} );
-                        helper.output(`\t${slash(path.join(directory, f))}`, ' ');                        
+                        if (fs.lstatSync(path.join(currentDirectory, d, f)).isDirectory()) {
+                            archive.directory(
+                                path.join(currentDirectory, d, f),
+                                slash(path.join(directory, f)));
+                        } else {
+                            archive.append(
+                                fs.createReadStream(path.join(currentDirectory, d, f)),
+                                {name: slash(path.join(directory, f))} );
+                        }
+                        helper.output(`\t${slash(path.join(directory, f))}`, ' ');
                     });
                 } else {
                     archive.append(
                             fs.createReadStream(path.join(currentDirectory, d, f)),
                             {name: slash(path.join(directory, path.parse(d).base))} );
-                    helper.output(`\t${path.join(directory, path.parse(d).base)}`, ' ');                                            
+                    helper.output(`\t${path.join(directory, path.parse(d).base)}`, ' ');
                 }
             } 
         });

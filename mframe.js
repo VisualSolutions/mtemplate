@@ -20,6 +20,10 @@ exports.mframe = function(currentDirectory) {
             type: 'color',
             value: '#ffffff'
         },
+        'imageReference': {
+            value: ['images/image1.jpg', 'images/image2.jpg'],
+            type: 'imageReference'
+        },
         'int': {
             type: 'int',
             value: 10
@@ -37,11 +41,8 @@ exports.mframe = function(currentDirectory) {
             }
         },
         'mediaReference': {
-            value: ['images/image1.jpg', 'images/image2.jpg'],
-            type: 'mediaReference',
-            typeOptions: {
-                mediaType: 5
-            }
+            value: [],
+            type: 'mediaReference'
         },
         'multiselect': {
             value: {
@@ -140,6 +141,10 @@ exports.mframe = function(currentDirectory) {
         'string': {
             type: 'string',
             value: 'default'
+        },
+        'videoReference': {
+            value: ['videos/video1.mp4', 'videos/video2.mp4'],
+            type: 'videoReference'
         }
     };
 
