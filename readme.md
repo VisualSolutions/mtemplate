@@ -71,7 +71,7 @@ If only a `component` is present, it will create a component with the specified 
 
 If a `component` and a `parameter` is present, it will create or find the specified component and create the parameter if it does not exist. The parameter also gets a default label for `en-US` with the name identical to the parameter name and a default tooltip. These should be edited manually in the `mframe.json` file. 
 
-If an optional `type` is present, the parameter is created using the specified type. The list of allowed types is: `array`, `bool`, `color`, `int`, `intRange`, `mediaReference`, `array`, `bool`, `color`, `int`, `intRange`, `mediaReference`, `multiselect`, `multiselect-btngroup`, `rangedInt`, `select`, `select-btngroup`, `select-fontSelect`, `select-fontSize`, `select-images`, `select-radio`, and `string` as default. Depending on the type, there will be some default/pre-filled `typeOptions` for some parameters.
+If an optional `type` is present, the parameter is created using the specified type. The list of allowed types is: `array`, `bool`, `color`, `imageReference`, `int`, `intRange`, `mediaReference`, `multiselect`, `multiselect-btngroup`, `rangedInt`, `select`, `select-btngroup`, `select-fontSelect`, `select-fontSize`, `select-images`, `select-radio`, `string`, and `videoReference` as default. Depending on the type, there will be some default/pre-filled `typeOptions` for some parameters.
 
 ### Listing components and parameters
 `mtemplate mframe list` will show a list of components and the number of parameters each component has. If you want a more detailed view, you can add the `--all` flag which will also go through all parameters.
